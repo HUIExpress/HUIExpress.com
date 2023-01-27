@@ -3,6 +3,7 @@
 let cartIcon=document.querySelector("#cart-icon");
 let cart=document.querySelector('.cart');
 let closeCart=document.querySelector('#close-cart');
+var total = 0;
 
 cartIcon.onclick = () =>{
     cart.classList.add("active");
@@ -56,11 +57,13 @@ function ready(){
 }
 //buy button clicked
 function buyButtonClicked(){
-    alert('Your order is placed');
+    // alert('Your order is placed');
+
     var cartContent = document.getElementsByClassName('cart-content')[0];
     while (cartContent.hasChildNodes()){
         cartContent.removeChild(cartContent.firstChild);
     }
+    makePayment()
     updatetotal();
 }
 
@@ -124,10 +127,10 @@ function addCartClicked(event){
  }
   
    //update total
-function updatetotal(){
+ function updatetotal(){
     var cartContent = document.getElementsByClassName("cart-content")[0];
     var cartBoxes = cartContent.getElementsByClassName("cart-box");
-    var total = 0;
+    // var total = 0;
     for (var i = 0; i < cartBoxes.length; i++){
         var cartBox = cartBoxes[i];
         var priceElement = cartBox.getElementsByClassName("cart-price")[0];
@@ -142,3 +145,34 @@ function updatetotal(){
        
     }
 
+
+    // flutterwave function
+    function makePayment() {
+        if (total) {
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK_TEST-d0ade36d233e37af0021710e37b1fd35-X",
+                tx_ref: "titanic-48981487343MDI0NzMx",
+                amount: total,
+                currency: "NGN",
+                payment_options: "card, mobilemoneyghana, ussd",
+                redirect_url: "google.com",
+                meta: {
+                    consumer_id: 23,
+                    consumer_mac: "92a3-912ba-1192a",
+                },
+                customer: {
+                    email: "rose@unsinkableship.com",
+                    phone_number: "08102909304",
+                    name: "Rose DeWitt Bukater",
+                },
+                customizations: {
+                    title: "HUI Express",
+                    description: "Payment for products",
+                    logo: "https://huiexpress.github.io/HUIExpress.com/IMAGES/HUI2.png",
+                },
+            });
+        }
+        else {
+            alert('No total value.')
+        }
+    }
