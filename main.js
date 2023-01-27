@@ -64,6 +64,7 @@ function buyButtonClicked(){
         cartContent.removeChild(cartContent.firstChild);
     }
     makePayment()
+    cart.classList.remove("active");
     updatetotal();
 }
 
